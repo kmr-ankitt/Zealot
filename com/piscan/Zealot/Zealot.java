@@ -22,8 +22,6 @@ public class Zealot {
         }
     }
 
-
-
     // test
     // We’ll use this to ensure we don’t try to execute code that has a known error.
     static boolean hadError = false;
