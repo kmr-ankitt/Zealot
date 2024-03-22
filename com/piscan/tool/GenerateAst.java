@@ -5,12 +5,12 @@ import java.io.PrintWriter;
 import java.util.Arrays;
 import java.util.List;
 
-
 // this code will generate sytanx tree subclasses 
+// we have to give directory where we want to use this script
 public class GenerateAst {
     public static void main(String[] args) throws IOException {
         if (args.length != 1) {
-            System.out.println("Usage: generate_ast <output directory>");
+            System.err.println("Usage: generate_ast <output directory>");
             System.exit(64);
         }
         String outputDir = args[0];
@@ -32,6 +32,8 @@ public class GenerateAst {
         writer.println();
         writer.println("abstract class " + baseName + "{");
 
+        defineVisitor(writer, baseName, types);
+
         /*
          * When we call this, baseName is “Expr”, which is both the name of the class
          * and the name of the file it outputs. We pass this as an argument instead of
@@ -46,8 +48,22 @@ public class GenerateAst {
 
         }
 
+        writer.println();
+        writer.println("  abstract <R> R accept(Visitor<R> visitor);");
+
         writer.println("}");
         writer.close();
+    }
+
+    // here we are declaring visit method of all subclasses
+    private static void defineVisitor(PrintWriter writer, String baseName, List<String> types) {
+
+        for (String type : types) {
+            String typeName = type.split(":")[0].trim();
+            writer.println("    R visit" + typeName + baseName + "(" + typeName + " " + baseName.toLowerCase() + ");");
+        }
+
+        writer.print("  }");
     }
 
     private static void defineType(PrintWriter writer, String baseName, String className, String fieldList) {
@@ -72,6 +88,13 @@ public class GenerateAst {
         }
 
         writer.println("  }");
+
+        // visitor pattern
+        writer.println();
+        writer.println("    @Override");
+        writer.println("    <R> R accept(Visitor<R> visitor) {");
+        writer.println("     return visitor.visit" + className + baseName + "(this);");
+        writer.println("    }");
     }
 
 }
