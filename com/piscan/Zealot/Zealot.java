@@ -69,16 +69,36 @@ public class Zealot {
         // Creating token
         List<Token> tokens = scanner.scanTokens();
 
-        // Printing all tokens
-        for (Token token : tokens) {
-            System.out.println(token);
-        }
+        // // Printing all tokens
+        // for (Token token : tokens) {
+        //     System.out.println(token);
+        // }
+
+        Parser parser = new Parser(tokens);
+        Expr expression = parser.parse();
+
+        //stop if there was a syntax error
+        if(hadError)
+            return ;
+        
+            System.out.println(new AstPrinter().print(expression));
 
     }
 
     // Finding Error
     static void error(int line, String message) {
         report(line, "", message);
+    }
+
+    //> Parsing Expressions token-error
+    static void error(Token token, String message) {
+        if (token.type == TokenType.EOF) {
+        report(token.line, " at end", message);
+        } 
+        
+        else {
+        report(token.line, " at '" + token.lexeme + "'", message);
+        }
     }
 
     // Reporting Error

@@ -16,7 +16,6 @@ class Scanner {
         keywords = new HashMap<>();
 
         keywords.put("and", AND);
-        keywords.put("and", AND);
         keywords.put("class", CLASS);
         keywords.put("else", ELSE);
         keywords.put("false", FALSE);
@@ -55,7 +54,7 @@ class Scanner {
             start = current;
 
             // we will scan tokens here
-            scanTokens();
+            scanToken();
         }
 
         // we are basically adding the scanned tokens to the list
