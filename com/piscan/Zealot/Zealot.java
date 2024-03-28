@@ -26,9 +26,11 @@ public class Zealot {
         }
     }
 
+    private static final Interpreter interpreter = new Interpreter();
     // test
     // We’ll use this to ensure we don’t try to execute code that has a known error.
     static boolean hadError = false;
+    static boolean hadRuntimeError = false;
 
     // Running with prompt
 
@@ -39,6 +41,9 @@ public class Zealot {
         // Indicate an error in the exit code.
         if (hadError)
             System.exit(65);
+        
+        if(hadRuntimeError)
+            System.exit(70);
     }
 
     // Running without any prompt
@@ -81,8 +86,9 @@ public class Zealot {
         if(hadError)
             return ;
         
-            System.out.println(new AstPrinter().print(expression));
-
+        // System.out.println(new AstPrinter().print(expression));
+        interpreter.interpret(expression);
+        
     }
 
     // Finding Error
@@ -99,6 +105,11 @@ public class Zealot {
         else {
         report(token.line, " at '" + token.lexeme + "'", message);
         }
+    }
+
+    static void runtimeError(RuntimeError error){
+        System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
+        hadRuntimeError = true;
     }
 
     // Reporting Error
