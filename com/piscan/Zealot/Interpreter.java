@@ -1,14 +1,17 @@
 package com.piscan.Zealot;
 
 import com.piscan.Zealot.Zealot;
+import java.util.List;
 
 // Object type is used here cus it represents all datatypes in Zealot
-class Interpreter implements Expr.Visitor<Object> {
+class Interpreter implements Expr.Visitor<Object> , Stmt.Visitor<Void>{
 
-    void interpret(Expr expression) {
+    // void interpret(Expr expression) {
+    void interpret(List<Stmt> statements) {
         try {
-            Object value = evaluate(expression);
-            System.out.println(stringify(value));
+            for(Stmt statement : statements){
+                execute(statement);
+            }
         } catch (RuntimeError error) {
 
             Zealot.runtimeError(error);
@@ -33,6 +36,26 @@ class Interpreter implements Expr.Visitor<Object> {
     private Object evaluate(Expr expr) {
         return expr.accept(this);
     }
+
+    private void execute(Stmt stmt){
+        stmt.accept(this);
+    }
+
+    // this takes the expression part
+    @Override
+    public Void visitExpressionStmt(Stmt.Expression stmt){
+        evaluate(stmt.expression);
+        return null;
+    }
+    
+    // this takes the statement part
+    @Override
+    public Void visitPrintStmt(Stmt.Print stmt){
+        Object value = evaluate(stmt.expression);
+        System.out.println(stringify(value));
+        return null;
+    }
+
 
     // this is to convert the unary expression
     // We do Post order traversal here

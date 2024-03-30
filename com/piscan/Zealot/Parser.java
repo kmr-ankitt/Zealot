@@ -1,9 +1,10 @@
 package com.piscan.Zealot;
 
-import java.beans.Expression;
+// import java.beans.Expression;
+import java.util.ArrayList;
 import java.util.List;
 
-import com.piscan.Zealot.Zealot;
+// import com.piscan.Zealot.Zealot;
 
 import static com.piscan.Zealot.TokenType.*;
 
@@ -21,12 +22,22 @@ class Parser {
         this.tokens = tokens;
     }
 
-    Expr parse() {
-        try {
-            return expression();
-        } catch (ParseError error) {
-            return null;
+    // // this part was to try our intiail parser
+    // Expr parse() {
+    // try {
+    // return expression();
+    // } catch (ParseError error) {
+    // return null;
+    // }
+    // }
+
+    List<Stmt> parse() {
+        List<Stmt> statements = new ArrayList<>();
+        while (!isAtEnd()) {
+            statements.add(statement());
         }
+
+        return statements;
     }
 
     // expressions => equality
@@ -47,6 +58,28 @@ class Parser {
         return expr;
     }
 
+    // here we will check wheather there is a Print statement or not
+    private Stmt statement() {
+        if (match(PRINT))
+            return printStatement();
+
+        return expressionStatement();
+    }
+
+    private Stmt printStatement() {
+        Expr value = expression();
+
+        // if no ; then it will throw error
+        consume(SEMICOLON, "Expect ';' after value.");
+        return new Stmt.Print(value);
+    }
+
+    private Stmt expressionStatement() {
+        Expr expr = expression();
+        consume(SEMICOLON, "Expect ';' after expression.");
+        return new Stmt.Expression(expr);
+    }
+
     // This checks to see if the current token has any of the given types.
     // If so, it consumes the token and returns true. Otherwise, it returns false
     private boolean match(TokenType... types) {
@@ -59,6 +92,7 @@ class Parser {
         return false;
     }
 
+    // it checks wheather a particular token is present or not
     private Token consume(TokenType type, String message) {
         if (check(type))
             return advance();
