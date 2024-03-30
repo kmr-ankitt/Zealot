@@ -1,5 +1,7 @@
 package com.piscan.Zealot;
 
+// import java.util.logging.Logger;
+
 // import java.beans.Expression;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,9 @@ class Parser {
     }
 
     private final List<Token> tokens;
+
+    // private static final Logger LOGGER =
+    // Logger.getLogger(Parser.class.getName());
 
     // we use current to point to the next token to be parsed
     private int current = 0;
@@ -31,9 +36,18 @@ class Parser {
     // }
     // }
 
+    // private void logTokens(List<Token> tokens) {
+    // for (Token token : tokens) {
+    // LOGGER.info(token.toString());
+    // }
+    // }
+
     List<Stmt> parse() {
         List<Stmt> statements = new ArrayList<>();
         while (!isAtEnd()) {
+
+            // logTokens(tokens.subList(current, tokens.size()));
+
             statements.add(statement());
         }
 
@@ -42,6 +56,8 @@ class Parser {
 
     // expressions => equality
     private Expr expression() {
+
+        // LOGGER.info("Found expression");
         return equality();
     }
 
@@ -56,103 +72,6 @@ class Parser {
         }
 
         return expr;
-    }
-
-    // here we will check wheather there is a Print statement or not
-    private Stmt statement() {
-        if (match(PRINT))
-            return printStatement();
-
-        return expressionStatement();
-    }
-
-    private Stmt printStatement() {
-        Expr value = expression();
-
-        // if no ; then it will throw error
-        consume(SEMICOLON, "Expect ';' after value.");
-        return new Stmt.Print(value);
-    }
-
-    private Stmt expressionStatement() {
-        Expr expr = expression();
-        consume(SEMICOLON, "Expect ';' after expression.");
-        return new Stmt.Expression(expr);
-    }
-
-    // This checks to see if the current token has any of the given types.
-    // If so, it consumes the token and returns true. Otherwise, it returns false
-    private boolean match(TokenType... types) {
-        for (TokenType type : types) {
-            if (check(type)) {
-                advance();
-                return true;
-            }
-        }
-        return false;
-    }
-
-    // it checks wheather a particular token is present or not
-    private Token consume(TokenType type, String message) {
-        if (check(type))
-            return advance();
-        throw error(peek(), message);
-    }
-
-    // this check method returns true when token is consumed. Unlike match it never
-    // consumes tokens
-    private boolean check(TokenType type) {
-        if (isAtEnd())
-            return false;
-        return peek().type == type;
-    }
-
-    // this advance method consumes the current token and returns it
-    private Token advance() {
-        if (!isAtEnd())
-            current++;
-        return previous();
-    }
-
-    private boolean isAtEnd() {
-        return peek().type == EOF;
-    }
-
-    private Token peek() {
-        return tokens.get(current);
-    }
-
-    private Token previous() {
-        return tokens.get(current - 1);
-    }
-
-    private ParseError error(Token token, String message) {
-        Zealot.error(token, message);
-        return new ParseError();
-    }
-
-    // we will discard the tokens until we find the semicolon and the next token
-    // starting with for, if, return, etc
-    private void synchronize() {
-        advance();
-
-        while (!isAtEnd()) {
-            if (previous().type == SEMICOLON)
-                return;
-
-            switch (peek().type) {
-                case CLASS:
-                case FUN:
-                case VAR:
-                case FOR:
-                case IF:
-                case WHILE:
-                case PRINT:
-                case RETURN:
-                    return;
-            }
-            advance();
-        }
     }
 
     // comparison → term ( ( ">" | ">=" | "<" | "<=" ) term )* ;
@@ -224,7 +143,115 @@ class Parser {
             return new Expr.Grouping(expr);
         }
 
+        // System.out.println("Expected primary but found: " + peek().type);
+
         throw error(peek(), "Expect expression.");
+    }
+
+    // here we will check wheather there is a Print statement or not
+    private Stmt statement() {
+        // logTokens(tokens.subList(current, tokens.size()));
+
+        if (match(PRINT)) {
+
+            // LOGGER.info("Found print statement");
+
+            return printStatement();
+        }
+        return expressionStatement();
+    }
+
+    private Stmt printStatement() {
+
+        // LOGGER.info("Found print statement");
+
+        Expr value = expression();
+        consume(SEMICOLON, "Expect ';' after value.");
+        return new Stmt.Print(value);
+    }
+
+    private Stmt expressionStatement() {
+        Expr expr = expression();
+        consume(SEMICOLON, "Expect ';' after expression.");
+        return new Stmt.Expression(expr);
+    }
+
+    // This checks to see if the current token has any of the given types.
+    // If so, it consumes the token and returns true. Otherwise, it returns false
+    private boolean match(TokenType... types) {
+        for (TokenType type : types) {
+            if (check(type)) {
+
+                // LOGGER.info("Found token: " + current + " with type: " + type);
+
+                advance();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // it checks wheather a particular token is present or not
+    private Token consume(TokenType type, String message) {
+        if (check(type))
+            return advance();
+        throw error(peek(), message);
+    }
+
+    // this check method returns true when token is consumed. Unlike match it never
+    // consumes tokens
+    private boolean check(TokenType type) {
+        if (isAtEnd())
+            return false;
+        return peek().type == type;
+    }
+
+    // this advance method consumes the current token and returns it
+    private Token advance() {
+        if (!isAtEnd())
+            current++;
+        return previous();
+    }
+
+    private boolean isAtEnd() {
+        return peek().type == EOF;
+    }
+
+    private Token peek() {
+        return tokens.get(current);
+    }
+
+    private Token previous() {
+        return tokens.get(current - 1);
+    }
+
+    private ParseError error(Token token, String message) {
+        Zealot.error(token, message);
+        return new ParseError();
+    }
+
+    // we will discard the tokens until we find the semicolon and the next token
+    // starting with for, if, return, etc
+    private void synchronize() {
+        advance();
+
+        while (!isAtEnd()) {
+            if (previous().type == SEMICOLON)
+                return;
+
+            switch (peek().type) {
+                case CLASS:
+                case FUN:
+                case VAR:
+                case FOR:
+                case IF:
+                case WHILE:
+                case PRINT:
+                case RETURN:
+                    return;
+            }
+            advance();
+        }
     }
 
 }
