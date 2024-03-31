@@ -1,10 +1,14 @@
 package com.piscan.zealot;
 
-import com.piscan.zealot.Zealot;
+// import com.piscan.zealot.Zealot;
 import java.util.List;
 
 // Object type is used here cus it represents all datatypes in zealot
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
+
+    // We store variables as a field directly in Interpreter so that the variables
+    // stay in memory as long as the interpreter is still running.
+    private Environment environment = new Environment();
 
     // void interpret(Expr expression) {
     void interpret(List<Stmt> statements) {
@@ -15,14 +19,14 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         } catch (RuntimeError error) {
 
             Zealot.runtimeError(error);
-            
+
         }
     }
-    
+
     private Object evaluate(Expr expr) {
         return expr.accept(this);
     }
-    
+
     private void execute(Stmt stmt) {
         stmt.accept(this);
     }
@@ -30,18 +34,38 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     // this takes the expression part
     @Override
     public Void visitExpressionStmt(Stmt.Expression stmt) {
-    evaluate(stmt.expression);
-    return null;
+        evaluate(stmt.expression);
+        return null;
     }
-    
+
     // this takes the statement part
     @Override
     public Void visitPrintStmt(Stmt.Print stmt) {
-    Object value = evaluate(stmt.expression);
-    System.out.println(stringify(value));
-    return null;
+        Object value = evaluate(stmt.expression);
+        System.out.println(stringify(value));
+        return null;
     }
 
+    @Override
+    public Void visitVarStmt(Stmt.Var stmt){
+        Object value = null;
+        if(stmt.initializer != null){
+            value = evaluate(stmt.initializer);
+        }
+
+        // if value is not initialized, it will be intialized with nill
+        environment.define(stmt.name.lexeme, value);
+        return null;
+    }
+
+    @Override
+    public Object visitAssignExpr(Expr.Assign expr){
+        Object value = evaluate(expr.value);
+        environment.assign(expr.name , value);
+
+        return value;
+    }
+    
     // we will now evaluate Binary operators
     // here also we evaluate the operant part first then we evaluate operator
     @Override
@@ -102,14 +126,13 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
         // unreachable
         return null;
-        
-    }
 
+    }
 
     // this takes the parenthesis part
     @Override
     public Object visitGroupingExpr(Expr.Grouping expr) {
-        
+
         // we need to convert the inner expression
         return evaluate(expr.expression);
     }
@@ -127,13 +150,13 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
         // first we evaluate the right part and then operator
         Object right = evaluate(expr.right);
-        
+
         switch (expr.operator.type) {
             case BANG:
                 return !isTruthy(right);
             case MINUS:
 
-            // checking right operant is choosed
+                // checking right operant is choosed
                 checkNumberOperand(expr.operator, right);
                 return -(double) right;
         }
@@ -141,13 +164,17 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         // unreachable
         return null;
     }
-    
-    
+
+    @Override
+    public Object visitVariableExpr(Expr.Variable expr){
+        return environment.get(expr.name);
+    }
+
     private boolean isTruthy(Object object) {
         if (object == null)
             return false;
         if (object instanceof Boolean)
-        return (boolean) object;
+            return (boolean) object;
         return true;
     }
 
@@ -157,10 +184,9 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (a == null)
             return false;
 
-            // equals is a builin java fuction to check if it is equal
-            return a.equals(b);
-        }
-
+        // equals is a builin java fuction to check if it is equal
+        return a.equals(b);
+    }
 
     // this will check wheather the operand is a interger or not
     private void checkNumberOperand(Token operator, Object operand) {
@@ -177,7 +203,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     // this take the zealot value and converts it to string
     private String stringify(Object object) {
-        
+
         if (object == null)
             return "nill";
 

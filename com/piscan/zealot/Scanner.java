@@ -147,11 +147,11 @@ class Scanner {
                 break;
 
             // it handles the identifiers like or
-            case 'o':
-                if (match('r')) {
-                    addToken(OR);
-                }
-                break;
+            // case 'o':
+            //     if (match('r')) {
+            //         addToken(OR);
+            //     }
+            //     break;
 
             // for handling the lexemes that are not available on the language like @ ^ #
             default:
@@ -182,7 +182,8 @@ class Scanner {
             type = IDENTIFIER;
         }
 
-        addToken(IDENTIFIER);
+        // addToken(IDENTIFIER); //Got my mind fucked fixing this small bug. It too literally took 2 days to fix. 
+        addToken(type);
     }
 
     // checking for numbers

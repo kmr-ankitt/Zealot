@@ -59,7 +59,8 @@ class Parser {
     private Expr expression() {
 
         // LOGGER.info("Found expression");
-        return equality();
+        // return equality();
+        return assignment();
     }
 
     // equality → comparison ( ( "!=" | "==" ) comparison )* ;
@@ -80,7 +81,7 @@ class Parser {
             if(match(VAR))
                 return varDeclaration();
             
-                return statement();
+            return statement();
         }
         catch(ParseError error){
             synchronize();
@@ -204,6 +205,22 @@ class Parser {
         Expr expr = expression();
         consume(SEMICOLON, "Expect ';' after expression.");
         return new Stmt.Expression(expr);
+    }
+
+    private Expr assignment(){
+        Expr expr = equality();
+
+        if (match(EQUAL)) {
+            Token equals = previous();
+            Expr value = assignment();
+
+            if (expr instanceof Expr.Variable) {
+                Token name = ((Expr.Variable)expr).name;
+                return new Expr.Assign(name, value);
+            }
+            error(equals, "Invaild assignment target.");
+        }
+        return expr;
     }
 
     // This checks to see if the current token has any of the given types.
