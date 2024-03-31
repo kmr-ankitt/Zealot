@@ -1,4 +1,4 @@
-package com.piscan.Zealot;
+package com.piscan.zealot;
 
 class RuntimeError extends RuntimeException {
     final Token token;

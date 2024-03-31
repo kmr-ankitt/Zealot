@@ -1,9 +1,9 @@
-package com.piscan.Zealot;
+package com.piscan.zealot;
 
-import com.piscan.Zealot.Zealot;
+import com.piscan.zealot.Zealot;
 import java.util.List;
 
-// Object type is used here cus it represents all datatypes in Zealot
+// Object type is used here cus it represents all datatypes in zealot
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     // void interpret(Expr expression) {
@@ -175,7 +175,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         throw new RuntimeError(operator, "Operands must be numbers. ");
     }
 
-    // this take the Zealot value and converts it to string
+    // this take the zealot value and converts it to string
     private String stringify(Object object) {
         
         if (object == null)

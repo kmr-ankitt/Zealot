@@ -1,4 +1,4 @@
-package com.piscan.Zealot;
+package com.piscan.zealot;
 
 import java.io.BufferedReader;
 import java.io.IOException;

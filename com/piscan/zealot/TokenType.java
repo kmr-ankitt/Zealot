@@ -1,4 +1,4 @@
-package com.piscan.Zealot;
+package com.piscan.zealot;
 
 enum TokenType {
 

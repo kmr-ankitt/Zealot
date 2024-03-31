@@ -1,4 +1,4 @@
-package com.piscan.Zealot;
+package com.piscan.zealot;
 
 class Token {
     final TokenType type;

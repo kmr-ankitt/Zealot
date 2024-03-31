@@ -20,12 +20,14 @@ public class GenerateAst {
                 "Binary   : Expr left, Token operator, Expr right",
                 "Grouping : Expr expression",
                 "Literal  : Object value",
-                "Unary    : Token operator, Expr right"));
+                "Unary    : Token operator, Expr right" ,
+                "Variable : Token name"));
 
         // this is for statements
         defineAst(outputDir, "Stmt", Arrays.asList(
                 "Expression : Expr expression",
-                "Print      : Expr expression"));
+                "Print      : Expr expression" ,
+                "Var        : Token name , Expr initializer "));
 
     }
 
@@ -36,7 +38,7 @@ public class GenerateAst {
         String path = outputDir + "/" + baseName + ".java";
         PrintWriter writer = new PrintWriter(path, "UTF-8");
 
-        writer.println("package com.piscan.Zealot;");
+        writer.println("package com.piscan.zealot;");
         writer.println();
         writer.println("import java.util.List;");
         writer.println();

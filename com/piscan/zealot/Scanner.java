@@ -1,11 +1,11 @@
-package com.piscan.Zealot;
+package com.piscan.zealot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.piscan.Zealot.TokenType.*;
+import static com.piscan.zealot.TokenType.*;
 
 class Scanner {
 
