@@ -14,4 +14,4 @@ To run Zealot, navigate to the `Zealot` directory in your terminal and execute t
 
 ```shell
 cd Zealot
-java com.piscan.Zealot.Zealot
+make

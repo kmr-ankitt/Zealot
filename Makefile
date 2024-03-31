@@ -1,4 +1,4 @@
-# Makefile for running Zealot 
+# Makefile for running Java program
 
 # Java compiler
 JAVAC = javac
