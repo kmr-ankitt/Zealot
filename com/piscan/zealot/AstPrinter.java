@@ -1,26 +1,24 @@
-package com.piscan.Zealot;
-
-// import javax.swing.tree.ExpandVetoException;
+package com.piscan.zealot;
 
 class AstPrinter implements Expr.Visitor<String> {
     String print(Expr expr) {
         return expr.accept(this);
     }
 
-    // we are writing this for handling binary expressions
+    // Implementing visitBinaryExpr method for handling binary expressions
     @Override
     public String visitBinaryExpr(Expr.Binary expr) {
         return parenthesize(expr.operator.lexeme,
                 expr.left, expr.right);
     }
 
-    // we are writing this for handling Grouping expressions
+    // Implementing visitGroupingExpr method for handling grouping expressions
     @Override
     public String visitGroupingExpr(Expr.Grouping expr) {
         return parenthesize("group", expr.expression);
     }
 
-    // we are writing this for handling Literal expressions
+    // Implementing visitLiteralExpr method for handling literal expressions
     @Override
     public String visitLiteralExpr(Expr.Literal expr) {
         if (expr.value == null)
@@ -28,26 +26,42 @@ class AstPrinter implements Expr.Visitor<String> {
         return expr.value.toString();
     }
 
-    // we are writing this for handling Unary expressions
+    // Implementing visitUnaryExpr method for handling unary expressions
     @Override
     public String visitUnaryExpr(Expr.Unary expr) {
         return parenthesize(expr.operator.lexeme, expr.right);
     }
 
-    private String parenthesize(String name, Expr... exprs) {
+    // Implementing visitVariableExpr method for handling variable expressions
+    @Override
+    public String visitVariableExpr(Expr.Variable expr) {
+        return expr.name.lexeme;
+    }
+
+    // Implementing visitAssignExpr method for handling assignment expressions
+    @Override
+    public String visitAssignExpr(Expr.Assign expr) {
+        return parenthesize("assign", expr.name.lexeme, expr.value);
+    }
+
+    private String parenthesize(String name, Object... parts) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("(").append(name);
-        for (Expr expr : exprs) {
+        for (Object part : parts) {
             builder.append(" ");
-            builder.append(expr.accept(this));
+            if (part instanceof Expr) {
+                builder.append(((Expr) part).accept(this));
+            } else {
+                builder.append(part);
+            }
         }
         builder.append(")");
 
         return builder.toString();
     }
 
-    // // this is a little check fuction to check out code
+    // Main method for testing
     public static void main(String[] args) {
         Expr expression = new Expr.Binary(
                 new Expr.Unary(
