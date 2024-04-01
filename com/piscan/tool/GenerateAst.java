@@ -21,15 +21,18 @@ public class GenerateAst {
                 "Binary   : Expr left, Token operator, Expr right",
                 "Grouping : Expr expression",
                 "Literal  : Object value",
-                "Unary    : Token operator, Expr right" ,
+                "Logical  : Expr left , Token operator , Expr right",
+                "Unary    : Token operator, Expr right",
                 "Variable : Token name"));
 
         // this is for statements
         defineAst(outputDir, "Stmt", Arrays.asList(
                 "Block      : List<Stmt> statements",
                 "Expression : Expr expression",
-                "Print      : Expr expression" ,
-                "Var        : Token name , Expr initializer "));
+                "If         : Expr condition , Stmt thenBranch," + " Stmt elseBranch",
+                "Print      : Expr expression",
+                "Var        : Token name , Expr initializer ",
+                "While      : Expr condtion , Stmt body"));
 
     }
 
@@ -77,7 +80,7 @@ public class GenerateAst {
         for (String type : types) {
             String typeName = type.split(":")[0].trim();
             writer.println("    R visit" + typeName + baseName + "(" +
-            typeName + " " + baseName.toLowerCase() + ");");
+                    typeName + " " + baseName.toLowerCase() + ");");
         }
 
         writer.println("  }");
@@ -118,39 +121,4 @@ public class GenerateAst {
         writer.println("  }");
 
     }
-
-    // < define-type
-    // > pastry-visitor
-    interface PastryVisitor {
-        void visitBeignet(Beignet beignet); // [overload]
-
-        void visitCruller(Cruller cruller);
-    }
-
-    // < pastry-visitor
-    // > pastries
-    abstract class Pastry {
-        // > pastry-accept
-        abstract void accept(PastryVisitor visitor);
-        // < pastry-accept
-    }
-
-    class Beignet extends Pastry {
-        // > beignet-accept
-        @Override
-        void accept(PastryVisitor visitor) {
-            visitor.visitBeignet(this);
-        }
-        // < beignet-accept
-    }
-
-    class Cruller extends Pastry {
-        // > cruller-accept
-        @Override
-        void accept(PastryVisitor visitor) {
-            visitor.visitCruller(this);
-        }
-        // < cruller-accept
-    }
-    // < pastries
 }

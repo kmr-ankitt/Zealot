@@ -31,28 +31,28 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         stmt.accept(this);
     }
 
-    void executeBlock(List<Stmt> statements , Environment environment){
-        
+    void executeBlock(List<Stmt> statements, Environment environment) {
+
         // visits all of the statements, and then restores the previous value
         Environment previous = this.environment;
-        try{
+        try {
             this.environment = environment;
-            
-            for(Stmt statement : statements){
+
+            for (Stmt statement : statements) {
                 execute(statement);
             }
         }
 
         // it restores the previous environment using a finally clause.
-        finally{
+        finally {
             this.environment = previous;
         }
     }
 
     // this is for block statements
     @Override
-    public Void visitBlockStmt(Stmt.Block stmt){
-        executeBlock(stmt.statements , new Environment(environment));
+    public Void visitBlockStmt(Stmt.Block stmt) {
+        executeBlock(stmt.statements, new Environment(environment));
         return null;
     }
 
@@ -60,6 +60,18 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Void visitExpressionStmt(Stmt.Expression stmt) {
         evaluate(stmt.expression);
+        return null;
+    }
+
+    @Override
+    public Void visitIfStmt(Stmt.If stmt) {
+
+        if (isTruthy(evaluate(stmt.condition))) {
+            execute(stmt.thenBranch);
+        } else if (stmt.elseBranch != null) {
+            execute(stmt.elseBranch);
+        }
+
         return null;
     }
 
@@ -72,9 +84,9 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
-    public Void visitVarStmt(Stmt.Var stmt){
+    public Void visitVarStmt(Stmt.Var stmt) {
         Object value = null;
-        if(stmt.initializer != null){
+        if (stmt.initializer != null) {
             value = evaluate(stmt.initializer);
         }
 
@@ -84,13 +96,21 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
-    public Object visitAssignExpr(Expr.Assign expr){
+    public Void visitWhileStmt(Stmt.While stmt){
+        while(isTruthy(evaluate(stmt.condtion))){
+            execute(stmt.body);
+        }
+        return null;
+    }
+
+    @Override
+    public Object visitAssignExpr(Expr.Assign expr) {
         Object value = evaluate(expr.value);
-        environment.assign(expr.name , value);
+        environment.assign(expr.name, value);
 
         return value;
     }
-    
+
     // we will now evaluate Binary operators
     // here also we evaluate the operant part first then we evaluate operator
     @Override
@@ -168,6 +188,22 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         return expr.value;
     }
 
+    @Override
+    public Object visitLogicalExpr(Expr.Logical expr){
+        Object left = evaluate(expr.left);
+
+        if(expr.operator.type == TokenType.OR){
+            if(isTruthy(left)) 
+                return left;
+        }
+        else{
+            if(!isTruthy(left))
+                return left;
+        }
+
+        return evaluate(expr.right);
+    }
+
     // this is to convert the unary expression
     // We do Post order traversal here
     @Override
@@ -191,7 +227,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
-    public Object visitVariableExpr(Expr.Variable expr){
+    public Object visitVariableExpr(Expr.Variable expr) {
         return environment.get(expr.name);
     }
 
