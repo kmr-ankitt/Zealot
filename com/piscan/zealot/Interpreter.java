@@ -1,6 +1,8 @@
 package com.piscan.zealot;
 
 // import com.piscan.zealot.Zealot;
+
+import java.util.ArrayList;
 import java.util.List;
 
 // Object type is used here cus it represents all datatypes in zealot
@@ -96,8 +98,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
-    public Void visitWhileStmt(Stmt.While stmt){
-        while(isTruthy(evaluate(stmt.condtion))){
+    public Void visitWhileStmt(Stmt.While stmt) {
+        while (isTruthy(evaluate(stmt.condtion))) {
             execute(stmt.body);
         }
         return null;
@@ -174,6 +176,31 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     }
 
+    @Override
+    public Object visitCallExpr(Expr.Call expr) {
+        Object callee = evaluate(expr.callee);
+
+        // firstly we evalute the expression for the callee
+        List<Object> arguments = new ArrayList<>();
+        for (Expr argument : expr.arguments) {
+            arguments.add(evaluate(argument));
+        }
+
+        // this is to handle this case: "totally not a function"();
+        if (!(callee instanceof ZealotCallable)) {
+            throw new RuntimeError(expr.paren, "Can only call functions and classes.");
+        }
+
+        ZealotCallable function = (ZealotCallable) callee;
+
+        if (arguments.size() != function.arity()) {
+            throw new RuntimeError(expr.paren,
+                    "Expected " + function.arity() + "arguments but got" + 
+                    arguments.size() + ".");
+        }
+        return function.call(this, arguments);
+    }
+
     // this takes the parenthesis part
     @Override
     public Object visitGroupingExpr(Expr.Grouping expr) {
@@ -189,15 +216,14 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
-    public Object visitLogicalExpr(Expr.Logical expr){
+    public Object visitLogicalExpr(Expr.Logical expr) {
         Object left = evaluate(expr.left);
 
-        if(expr.operator.type == TokenType.OR){
-            if(isTruthy(left)) 
+        if (expr.operator.type == TokenType.OR) {
+            if (isTruthy(left))
                 return left;
-        }
-        else{
-            if(!isTruthy(left))
+        } else {
+            if (!isTruthy(left))
                 return left;
         }
 
