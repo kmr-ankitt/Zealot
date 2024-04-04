@@ -18,14 +18,29 @@ To run Zealot, navigate to the `Zealot` directory in your terminal and execute t
 **For Linux and macOS:**
 
 ```
-cd Zealot
 make
 ```
 
 For Windows:
 
 ```
-cd Zealot
 javac com/piscan/zealot/*.java
 java com/piscan/zealot/Zealot
 ```
+
+## Cleaning Up Compiled Files
+
+After running Zealot, you may want to clean up compiled files. Use the following commands:
+
+**For Linux and macOS:**
+
+```
+make clean
+```
+
+**For Windows:**
+
+```
+Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -Force
+```
+These commands will remove all compiled `.class` files, ensuring a clean environment 
