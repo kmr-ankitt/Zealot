@@ -1,5 +1,17 @@
 package com.piscan.zealot;
 
+import static com.piscan.zealot.TokenType.BANG;
+import static com.piscan.zealot.TokenType.BANG_EQUAL;
+import static com.piscan.zealot.TokenType.EQUAL_EQUAL;
+import static com.piscan.zealot.TokenType.GREATER;
+import static com.piscan.zealot.TokenType.GREATER_EQUAL;
+import static com.piscan.zealot.TokenType.LESS;
+import static com.piscan.zealot.TokenType.LESS_EQUAL;
+import static com.piscan.zealot.TokenType.MINUS;
+import static com.piscan.zealot.TokenType.PLUS;
+import static com.piscan.zealot.TokenType.SLASH;
+import static com.piscan.zealot.TokenType.STAR;
+
 // import com.piscan.zealot.Zealot;
 
 import java.util.ArrayList;
@@ -10,7 +22,34 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     // We store variables as a field directly in Interpreter so that the variables
     // stay in memory as long as the interpreter is still running.
-    private Environment environment = new Environment();
+    // private Environment environment = new Environment();
+
+    final Environment globals = new Environment();
+    private Environment environment = globals;
+
+    // If wanted to add new functionalites we can do it from here only like: Reading
+    // input from the user, working with files, etc.—we could add them each as their
+    // own anonymous class that implements LoxCallable.
+    Interpreter() {
+
+        // this will print the time taken to run the program
+        globals.define("clock", new ZealotCallable() {
+            @Override
+            public int arity() {
+                return 0;
+            }
+
+            @Override
+            public Object call(Interpreter interpreter, List<Object> arguments) {
+                return (double) System.currentTimeMillis() / 1000.0;
+            }
+
+            @Override
+            public String toString() {
+                return "<native fn>";
+            }
+        });
+    }
 
     // void interpret(Expr expression) {
     void interpret(List<Stmt> statements) {
@@ -65,6 +104,13 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         return null;
     }
 
+    @Override 
+    public Void visitFunctionStmt(Stmt.Function stmt){
+        ZealotFunction function = new ZealotFunction(stmt , environment);
+        environment.define(stmt.name.lexeme, function);
+        return null;
+    }
+
     @Override
     public Void visitIfStmt(Stmt.If stmt) {
 
@@ -83,6 +129,15 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         Object value = evaluate(stmt.expression);
         System.out.println(stringify(value));
         return null;
+    }
+
+    @Override
+    public Void visitReturnStmt(Stmt.Return stmt){
+        Object value = null;
+        if(stmt.value != null) 
+            value = evaluate(stmt.value);
+
+        throw new Return(value);
     }
 
     @Override
@@ -195,8 +250,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
         if (arguments.size() != function.arity()) {
             throw new RuntimeError(expr.paren,
-                    "Expected " + function.arity() + "arguments but got" + 
-                    arguments.size() + ".");
+                    "Expected " + function.arity() + "arguments but got" +
+                            arguments.size() + ".");
         }
         return function.call(this, arguments);
     }

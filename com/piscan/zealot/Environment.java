@@ -3,6 +3,8 @@ package com.piscan.zealot;
 import java.util.HashMap;
 import java.util.Map;
 
+
+// this maintains mapping of variables to the corresponding value
 class Environment {
 
     final Environment enclosing;
