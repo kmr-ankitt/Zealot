@@ -3,19 +3,18 @@ package com.piscan.zealot;
 import java.util.HashMap;
 import java.util.Map;
 
-
 // this maintains mapping of variables to the corresponding value
 class Environment {
 
     final Environment enclosing;
 
     // this is for global scope's environment
-    Environment(){
+    Environment() {
         enclosing = null;
     }
-    
+
     // this is for local scope's environment
-    Environment(Environment enclosing){
+    Environment(Environment enclosing) {
         this.enclosing = enclosing;
     }
 
@@ -28,7 +27,7 @@ class Environment {
             return values.get(name.lexeme);
         }
 
-        if(enclosing != null)
+        if (enclosing != null)
             return enclosing.get(name);
 
         throw new RuntimeError(name, "Undefined variable '" + name.lexeme + "'.");
@@ -42,7 +41,7 @@ class Environment {
             return;
         }
 
-        if(enclosing != null){
+        if (enclosing != null) {
             enclosing.assign(name, value);
             return;
         }
@@ -55,4 +54,20 @@ class Environment {
         values.put(name, value);
     }
 
+    Environment ancestor(int distance) {
+        Environment environment = this;
+        for (int i = 0; i < distance; i++) {
+            environment = environment.enclosing;
+        }
+
+        return environment;
+    }
+
+    Object getAt(int distance, String name) {
+        return ancestor(distance).values.get(name);
+    }
+
+    void assignAt(int distance, Token name, Object value) {
+        ancestor(distance).values.put(name.lexeme, value);
+    }
 }

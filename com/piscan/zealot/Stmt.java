@@ -110,8 +110,8 @@ abstract class Stmt {
     final Expr initializer;
   }
   static class While extends Stmt {
-    While(Expr condtion , Stmt body) {
-      this.condtion = condtion;
+    While(Expr condition , Stmt body) {
+      this.condition = condition;
       this.body = body;
     }
 
@@ -120,7 +120,7 @@ abstract class Stmt {
       return visitor.visitWhileStmt(this);
     }
 
-    final Expr condtion ;
+    final Expr condition ;
     final Stmt body;
   }
 

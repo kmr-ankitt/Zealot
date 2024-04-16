@@ -15,7 +15,9 @@ import static com.piscan.zealot.TokenType.STAR;
 // import com.piscan.zealot.Zealot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 // Object type is used here cus it represents all datatypes in zealot
 class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
@@ -26,6 +28,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     final Environment globals = new Environment();
     private Environment environment = globals;
+
+    private final Map<Expr, Integer> locals = new HashMap<>();
 
     // If wanted to add new functionalites we can do it from here only like: Reading
     // input from the user, working with files, etc.—we could add them each as their
@@ -72,6 +76,11 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         stmt.accept(this);
     }
 
+    // The OG Resolver
+    void resolve(Expr expr, int depth) {
+        locals.put(expr, depth);
+    }
+
     void executeBlock(List<Stmt> statements, Environment environment) {
 
         // visits all of the statements, and then restores the previous value
@@ -104,9 +113,9 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         return null;
     }
 
-    @Override 
-    public Void visitFunctionStmt(Stmt.Function stmt){
-        ZealotFunction function = new ZealotFunction(stmt , environment);
+    @Override
+    public Void visitFunctionStmt(Stmt.Function stmt) {
+        ZealotFunction function = new ZealotFunction(stmt, environment);
         environment.define(stmt.name.lexeme, function);
         return null;
     }
@@ -132,9 +141,9 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     }
 
     @Override
-    public Void visitReturnStmt(Stmt.Return stmt){
+    public Void visitReturnStmt(Stmt.Return stmt) {
         Object value = null;
-        if(stmt.value != null) 
+        if (stmt.value != null)
             value = evaluate(stmt.value);
 
         throw new Return(value);
@@ -154,7 +163,7 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Void visitWhileStmt(Stmt.While stmt) {
-        while (isTruthy(evaluate(stmt.condtion))) {
+        while (isTruthy(evaluate(stmt.condition))) {
             execute(stmt.body);
         }
         return null;
@@ -163,7 +172,15 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
     @Override
     public Object visitAssignExpr(Expr.Assign expr) {
         Object value = evaluate(expr.value);
-        environment.assign(expr.name, value);
+
+        // environment.assign(expr.name, value);
+
+        Integer distance = locals.get(expr);
+        if (distance != null) {
+            environment.assignAt(distance, expr.name, value);
+        } else {
+            globals.assign(expr.name, value);
+        }
 
         return value;
     }
@@ -309,7 +326,8 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
     @Override
     public Object visitVariableExpr(Expr.Variable expr) {
-        return environment.get(expr.name);
+        // return environment.get(expr.name);
+        return lookUpVariable(expr.name, expr);
     }
 
     private boolean isTruthy(Object object) {
@@ -318,6 +336,15 @@ class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
         if (object instanceof Boolean)
             return (boolean) object;
         return true;
+    }
+
+    private Object lookUpVariable(Token name, Expr expr) {
+        Integer distance = locals.get(expr);
+        if (distance != null) {
+            return environment.getAt(distance, name.lexeme);
+        } else {
+            return globals.get(name);
+        }
     }
 
     private boolean isEqual(Object a, Object b) {
