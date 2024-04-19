@@ -44,3 +44,85 @@ make clean
 Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -Force
 ```
 These commands will remove all compiled `.class` files, ensuring a clean environment 
+
+
+## Zealot Grammer
+
+### Variables
+```console
+    var x = 15; // number
+    var name = "your name"; // string
+    var yes = true; // booleans
+    var no = false; // booleans
+    var nullable = nil;
+```
+
+### Logical operators
+```console
+!true;  // false.
+!false; // true.
+true and false; // false.
+true and true;  // true.
+false or false; // false.
+true or false;  // true.
+```
+
+### Control flow
+```console
+    var x = 15;
+    if(x > 0){
+        print "x > 0";
+    }else {
+        print "x <= 0";    
+    }
+```
+
+### Loops
+```console
+    var i = 0;
+    while(i < 10){
+        print i;
+        i = i + 1;
+    }
+    
+    for(var j=0; j<5; j = j + 1){
+        print j;
+    }
+```
+
+### Functions
+```console
+    fun greetings(name){
+        print "hello " + name;
+    }
+    
+    greetings("leonard");
+```
+
+### Closures
+```console
+fun addPair(a, b) {
+  return a + b;
+}
+
+fun identity(a) {
+  return a;
+}
+
+print identity(addPair)(1, 2); // Prints "3".
+
+fun makeCounter(){
+    var c = 0;
+    fun counter(){
+        c = c + 1;
+        print c;
+    }
+    return counter;
+}
+
+var counter1 = makeCounter();
+var counter2 = makeCounter();
+
+counter1(); // 1
+counter2(); // 1
+```
