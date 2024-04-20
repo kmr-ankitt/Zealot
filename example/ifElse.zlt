@@ -1,0 +1,9 @@
+var a = 1;
+var b = 5;
+
+if(a == b){
+    print "not true";
+}
+else{
+    print "true";
+}
