@@ -35,6 +35,13 @@ public class Zealot {
     // Running with prompt
 
     private static void runFile(String path) throws IOException {
+
+        // Check if the file extension is .zlt
+        if (!path.endsWith(".zlt")) {
+            System.err.println("Error: Invalid file extension. The file must have a .zlt extension.");
+            System.exit(66); // Exit with a custom error code for invalid file extension
+        }
+     
         byte[] bytes = Files.readAllBytes(Paths.get(path));
         run(new String(bytes, Charset.defaultCharset()));
 
