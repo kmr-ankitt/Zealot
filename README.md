@@ -1,7 +1,5 @@
 # Zealot
 
-**Under Development!**
-
 Zealot is a Tree-Walking Interpreter designed for simplicity, efficiency, and ease of use which I develeoped while learning. It aims to provide a clean and concise syntax while offering powerful features for developing a wide range of applications.
 
 ## Prerequisites
@@ -17,15 +15,15 @@ To run Zealot, navigate to the `Zealot` directory in your terminal and execute t
 
 **For Linux and macOS:**
 
-```
-make
+```bash
+    make
 ```
 
 For Windows:
 
-```
-javac com/piscan/zealot/*.java
-java com/piscan/zealot/Zealot
+```powershell
+    javac com/piscan/zealot/*.java
+    java com/piscan/zealot/Zealot
 ```
 
 ## Cleaning Up Compiled Files
@@ -34,14 +32,14 @@ After running Zealot, you may want to clean up compiled files. Use the following
 
 **For Linux and macOS:**
 
-```
-make clean
+```bash
+    make clean
 ```
 
 **For Windows:**
 
-```
-Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -Force
+```powershell
+    Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -Force
 ```
 These commands will remove all compiled `.class` files, ensuring a clean environment 
 
@@ -51,7 +49,7 @@ These commands will remove all compiled `.class` files, ensuring a clean environ
 ### Hello, world!
 A simple hello world program in Zealot:
 ```python
-print "Hello, World!";
+    print "Hello, World!";
 ```
 Semi-colons at the end of every line is mandatory in Zealot.
 
@@ -128,9 +126,9 @@ Zealot has following operators:
 Zealot has only one type of comment, single line comments, which can be defined using `//` at the beginning of a line.
 
 ```c
-// This is a comment.
-// The Lexer completely ignores any line starting with //
-// The Whole line is ignored.
+    // This is a comment.
+    // The Lexer completely ignores any line starting with //
+    // The Whole line is ignored.
 ```
 
 

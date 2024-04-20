@@ -1,4 +1,4 @@
-# Makefile for running Java program
+# Makefile for running Zealot program
 
 # Java compiler
 JAVAC = javac
@@ -29,13 +29,22 @@ all: $(MAIN_CLASS)
 $(CLASS_DIR):
 	mkdir -p $(CLASS_DIR)
 
-# Rule to compile Java source files
+# Target to compile Java source files
+.PHONY: compile
+compile: $(CLASSES)
+
 $(CLASS_DIR)/%.class: $(SRC_DIR)/%.java | $(CLASS_DIR)
 	$(JAVAC) -d $(CLASS_DIR) $<
 
-# Rule to run the Java program
-$(MAIN_CLASS): $(CLASSES)
+# Target to run Zealot in REPL mode
+.PHONY: repl
+repl: compile
 	$(JAVA) -cp $(CLASS_DIR) $(MAIN_CLASS)
+
+# Target to execute a Zealot program stored in a file
+.PHONY: run
+run: compile
+	$(JAVA) -cp $(CLASS_DIR) $(MAIN_CLASS) "$(INPUT)"
 
 # Clean target
 .PHONY: clean
