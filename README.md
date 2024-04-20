@@ -2,7 +2,7 @@
 
 **Under Development!**
 
-Zealot is a Tree-Walking Interpreter designed for simplicity, efficiency, and ease of use. It aims to provide a clean and concise syntax while offering powerful features for developing a wide range of applications.
+Zealot is a Tree-Walking Interpreter designed for simplicity, efficiency, and ease of use which I develeoped while learning. It aims to provide a clean and concise syntax while offering powerful features for developing a wide range of applications.
 
 ## Prerequisites
 
@@ -46,10 +46,96 @@ Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -
 These commands will remove all compiled `.class` files, ensuring a clean environment 
 
 
-## Zealot Grammer
+## Zealot Documentation
+
+### Hello, world!
+A simple hello world program in Zealot:
+```python
+print "Hello, World!";
+```
+Semi-colons at the end of every line is mandatory in Zealot.
+
+### Datatypes
+Zealot has following datatypes
+
+#### Numbers
+These can number literals which can be both integers and floating point numbers.
+
+examples: `1`, `2.5`, `9`
+
+#### Strings
+These are string literals defined inside `"`
+
+examples: `"Zealot"`, `"Strings are easy"`
+
+### Booleans
+These are boolean literals which can be either `true` or `false`.
+
+examples: `true`, `false`
+
+### Null
+Zealot has nulls, the trillion dollar mistale. It can be defined using the `null` keyword. All uninitialized variables are given the value of `null`.
+
+examples: `null`
+
+
+
+### Operators.
+Zealot has following operators:
+#### Assignment
+`=` - equals
+
+#### Unary operators
+`-` - Unary negation
+
+### Logical operators
+`and` - logical AND
+
+`or`  - logical OR
+
+`!`   - logical NOT
+
+
+#### Arithmetic operators
+`+` - sum
+
+`-` - difference
+
+`*` - product 
+
+`/` - division 
+
+`%` - mod
+
+
+#### Comparison operators
+`==` - is equals
+
+`!=` - is not equals
+
+`>`  - is less than
+
+`>=` - is less than or equals
+
+`>`  - is greater than
+
+`>=` - is greater than or equals
+
+
+
+
+### Comments
+Zealot has only one type of comment, single line comments, which can be defined using `//` at the beginning of a line.
+
+```c
+// This is a comment.
+// The Lexer completely ignores any line starting with //
+// The Whole line is ignored.
+```
+
 
 ### Variables
-```console
+```javascript
     var x = 15; // number
     var name = "your name"; // string
     var yes = true; // booleans
@@ -58,17 +144,17 @@ These commands will remove all compiled `.class` files, ensuring a clean environ
 ```
 
 ### Logical operators
-```console
-!true;  // false.
-!false; // true.
-true and false; // false.
-true and true;  // true.
-false or false; // false.
-true or false;  // true.
+```javascript
+    !true;  // false.
+    !false; // true.
+    true and false; // false.
+    true and true;  // true.
+    false or false; // false.
+    true or false;  // true.
 ```
 
 ### Control flow
-```console
+```python
     var x = 15;
     if(x > 0){
         print "x > 0";
@@ -78,7 +164,7 @@ true or false;  // true.
 ```
 
 ### Loops
-```console
+```javascript
     var i = 0;
     while(i < 10){
         print i;
@@ -91,38 +177,38 @@ true or false;  // true.
 ```
 
 ### Functions
-```console
+```javascript
     fun greetings(name){
         print "hello " + name;
     }
     
-    greetings("leonard");
+    greetings("Ankit");
 ```
 
 ### Closures
-```console
-fun addPair(a, b) {
-  return a + b;
-}
-
-fun identity(a) {
-  return a;
-}
-
-print identity(addPair)(1, 2); // Prints "3".
-
-fun makeCounter(){
-    var c = 0;
-    fun counter(){
-        c = c + 1;
-        print c;
+```javascript
+    fun addPair(a, b) {
+    return a + b;
     }
-    return counter;
-}
 
-var counter1 = makeCounter();
-var counter2 = makeCounter();
+    fun identity(a) {
+    return a;
+    }
 
-counter1(); // 1
-counter2(); // 1
+    print identity(addPair)(1, 2); // Prints "3".
+
+    fun makeCounter(){
+        var c = 0;
+        fun counter(){
+            c = c + 1;
+            print c;
+        }
+        return counter;
+    }
+
+    var counter1 = makeCounter();
+    var counter2 = makeCounter();
+
+    counter1(); // 1
+    counter2(); // 1
 ```
