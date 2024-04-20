@@ -207,14 +207,14 @@ To run Zealot, First clone Zealot Repository and navigate to the `Zealot` direct
 
 **For Windows:**
 
--Repl Mode
+- Repl Mode
 ```powershell
     ./zealot.bat
 ```
 
--Zealot File 
+- Zealot File 
 ```powershell
-    ./zealot.bat FILE_NAME
+    ./zealot.bat FILE_DIRECTORY
 ```
 
 
@@ -228,7 +228,7 @@ For Linux and MacOS :
     make repl 
 ```
 
--Zealot file
+- Zealot file
 ```bash
     make run INPUT="FILE_DIRECTORY"
 ```
