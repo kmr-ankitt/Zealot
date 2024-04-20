@@ -181,7 +181,12 @@ Zealot has only one type of comment, single line comments, which can be defined 
 
 ## Installing Zealot
 
-To run Zealot, navigate to the `Zealot` directory in your terminal and execute the following command:
+To run Zealot, First clone Zealot Repository and navigate to the `Zealot` directory in your terminal and execute the following command:
+
+```
+    git clone https://github.com/kmr-ankitt/Zealot
+    cd Zealot
+```
 
 
 **For Linux and macOS:**
