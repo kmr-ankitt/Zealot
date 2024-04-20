@@ -148,7 +148,7 @@ Zealot has only one type of comment, single line comments, which can be defined 
         print "hello " + name;
     }
     
-    greetings("Ankit");
+    greetings("piscan");
 ```
 
 ### Closures
@@ -183,7 +183,7 @@ Zealot has only one type of comment, single line comments, which can be defined 
 
 To run Zealot, First clone Zealot Repository and navigate to the `Zealot` directory in your terminal and execute the following command:
 
-```
+```bash
     git clone https://github.com/kmr-ankitt/Zealot
     cd Zealot
 ```
