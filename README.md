@@ -7,44 +7,12 @@ Zealot is a Tree-Walking Interpreter designed for simplicity, efficiency, and ea
 Before running Zealot, ensure that you have the following installed on your system:
 
 - **Java Development Kit (JDK):** You can download and install JDK from the [official Oracle website](https://www.oracle.com/java/technologies/javase-jdk16-downloads.html).
-- **Make:** Ensure that you have `make` installed on your system. This is typically available on Unix-like systems such as Linux and macOS.
-
-## Running Zealot
-
-To run Zealot, navigate to the `Zealot` directory in your terminal and execute the following command:
-
-**For Linux and macOS:**
-
-```bash
-    make
-```
-
-For Windows:
-
-```powershell
-    javac com/piscan/zealot/*.java
-    java com/piscan/zealot/Zealot
-```
-
-## Cleaning Up Compiled Files
-
-After running Zealot, you may want to clean up compiled files. Use the following commands:
-
-**For Linux and macOS:**
-
-```bash
-    make clean
-```
-
-**For Windows:**
-
-```powershell
-    Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -Force
-```
-These commands will remove all compiled `.class` files, ensuring a clean environment 
-
 
 ## Zealot Documentation
+
+### File Extension
+Zealot supports text files with `zlt` file extension.
+example: `main.zlt`
 
 ### Hello, world!
 A simple hello world program in Zealot:
@@ -210,3 +178,71 @@ Zealot has only one type of comment, single line comments, which can be defined 
     counter1(); // 1
     counter2(); // 1
 ```
+
+## Installing Zealot
+
+To run Zealot, navigate to the `Zealot` directory in your terminal and execute the following command:
+
+
+**For Linux and macOS:**
+
+```bash
+    source .bashrc
+```
+
+- Repl Mode 
+```bash
+    zealot 
+```
+
+- Zelaot file
+```bash
+    zealot FILE_DIRECTORY
+```
+
+**For Windows:**
+
+-Repl Mode
+```powershell
+    ./zealot.bat
+```
+
+-Zealot File 
+```powershell
+    ./zealot.bat FILE_NAME
+```
+
+
+**Or Using Make**
+
+For Linux and MacOS :
+
+- Repl mode
+```bash
+    make compile
+    make repl 
+```
+
+-Zealot file
+```bash
+    make run INPUT="FILE_DIRECTORY"
+```
+
+
+## Cleaning Up Compiled Files
+
+After running Zealot, you may want to clean up compiled files. Use the following commands:
+
+**For Linux and macOS:**
+
+```bash
+    make clean
+```
+
+**For Windows:**
+
+```powershell
+    Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -Force
+```
+These commands will remove all compiled `.class` files, ensuring a clean environment 
+
