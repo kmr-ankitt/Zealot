@@ -13,7 +13,7 @@ public class Zealot {
 
     public static void main(String[] args) throws IOException {
         if (args.length > 1) {
-            System.out.println("Usage: jlox [script]");
+            System.out.println("Usage: Zealot [script]");
             System.exit(64);
         }
 
@@ -122,7 +122,7 @@ public class Zealot {
 
     // Reporting Error
     private static void report(int line, String where, String message) {
-        System.err.println("[line " + "] Error" + where + ": " + message);
+        System.err.println("[line " + line + "] Error" + where + ": " + message);
         hadError = true;
     }
 }
