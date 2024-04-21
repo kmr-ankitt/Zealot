@@ -17,7 +17,7 @@ example: `main.zlt`
 ### Hello, world!
 A simple hello world program in Zealot:
 ```python
-    print "Hello, World!";
+print "Hello, World!";
 ```
 Semi-colons at the end of every line is mandatory in Zealot.
 
@@ -94,89 +94,89 @@ Zealot has following operators:
 Zealot has only one type of comment, single line comments, which can be defined using `//` at the beginning of a line.
 
 ```c
-    // This is a comment.
-    // The Lexer completely ignores any line starting with //
-    // The Whole line is ignored.
+// This is a comment.
+// The Lexer completely ignores any line starting with //
+// The Whole line is ignored.
 ```
 
 
 ### Variables
 ```javascript
-    var x = 15; // number
-    var name = "your name"; // string
-    var yes = true; // booleans
-    var no = false; // booleans
-    var nullable = nil;
+var x = 15; // number
+var name = "your name"; // string
+var yes = true; // booleans
+var no = false; // booleans
+var nullable = nil;
 ```
 
 ### Logical operators
 ```javascript
-    !true;  // false.
-    !false; // true.
-    true and false; // false.
-    true and true;  // true.
-    false or false; // false.
-    true or false;  // true.
+!true;  // false.
+!false; // true.
+true and false; // false.
+true and true;  // true.
+false or false; // false.
+true or false;  // true.
 ```
 
 ### Control flow
 ```python
-    var x = 15;
-    if(x > 0){
-        print "x > 0";
-    }else {
-        print "x <= 0";    
-    }
+var x = 15;
+if(x > 0){
+    print "x > 0";
+}else {
+    print "x <= 0";    
+}
 ```
 
 ### Loops
 ```javascript
-    var i = 0;
-    while(i < 10){
-        print i;
-        i = i + 1;
-    }
-    
-    for(var j=0; j<5; j = j + 1){
-        print j;
-    }
+var i = 0;
+while(i < 10){
+    print i;
+    i = i + 1;
+}
+
+for(var j=0; j<5; j = j + 1){
+    print j;
+}
 ```
 
 ### Functions
 ```javascript
-    fun greetings(name){
-        print "hello " + name;
-    }
-    
-    greetings("piscan");
+fun greetings(name){
+    print "hello " + name;
+}
+
+greetings("piscan");
 ```
 
 ### Closures
 ```javascript
-    fun addPair(a, b) {
-    return a + b;
+fun addPair(a, b) {
+return a + b;
+}
+
+fun identity(a) {
+return a;
+}
+
+print identity(addPair)(1, 2); // Prints "3".
+
+fun makeCounter(){
+    var c = 0;
+    fun counter(){
+        c = c + 1;
+        print c;
     }
+    return counter;
+}
 
-    fun identity(a) {
-    return a;
-    }
+var counter1 = makeCounter();
+var counter2 = makeCounter();
 
-    print identity(addPair)(1, 2); // Prints "3".
-
-    fun makeCounter(){
-        var c = 0;
-        fun counter(){
-            c = c + 1;
-            print c;
-        }
-        return counter;
-    }
-
-    var counter1 = makeCounter();
-    var counter2 = makeCounter();
-
-    counter1(); // 1
-    counter2(); // 1
+counter1(); // 1
+counter2(); // 1
 ```
 
 ## Installing Zealot
@@ -184,37 +184,37 @@ Zealot has only one type of comment, single line comments, which can be defined 
 To run Zealot, First clone Zealot Repository and navigate to the `Zealot` directory in your terminal and execute the following command:
 
 ```bash
-    git clone https://github.com/kmr-ankitt/Zealot
-    cd Zealot
+git clone https://github.com/kmr-ankitt/Zealot
+cd Zealot
 ```
 
 
 **For Linux and macOS:**
 
 ```bash
-    source .bashrc
+source .bashrc
 ```
 
 - Repl Mode 
 ```bash
-    zealot 
+zealot 
 ```
 
 - Zelaot file
 ```bash
-    zealot FILE_DIRECTORY
+zealot FILE_DIRECTORY
 ```
 
 **For Windows:**
 
 - Repl Mode
 ```powershell
-    ./zealot.bat
+./zealot.bat
 ```
 
 - Zealot File 
 ```powershell
-    ./zealot.bat FILE_DIRECTORY
+./zealot.bat FILE_DIRECTORY
 ```
 
 
@@ -224,13 +224,13 @@ For Linux and MacOS :
 
 - Repl mode
 ```bash
-    make compile
-    make repl 
+make compile
+make repl 
 ```
 
 - Zealot file
 ```bash
-    make run INPUT="FILE_DIRECTORY"
+make run INPUT="FILE_DIRECTORY"
 ```
 
 
@@ -241,13 +241,13 @@ After running Zealot, you may want to clean up compiled files. Use the following
 **For Linux and macOS:**
 
 ```bash
-    make clean
+make clean
 ```
 
 **For Windows:**
 
 ```powershell
-    Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -Force
+Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -Force
 ```
 These commands will remove all compiled `.class` files, ensuring a clean environment 
 
