@@ -40,9 +40,9 @@ These are boolean literals which can be either `true` or `false`.
 examples: `true`, `false`
 
 ### Null
-Zealot has nulls, the trillion dollar mistale. It can be defined using the `null` keyword. All uninitialized variables are given the value of `null`.
+Zealot has nulls, the trillion dollar mistale. It can be defined using the `nill` keyword. All uninitialized variables are given the value of `nill`.
 
-examples: `null`
+examples: `nill`
 
 
 
