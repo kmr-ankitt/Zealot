@@ -32,7 +32,7 @@ class Scanner {
         keywords.put("var", VAR);
         keywords.put("while", WHILE);
     }
-    
+
     private final String source;
 
     // creating a list of tokens
@@ -127,6 +127,28 @@ class Scanner {
                 if (match('/')) {
                     while (peek() != '\n' && !isAtEnd())
                         advance();
+                }
+                
+                // Multiline comment
+                else if (match('*')) {
+                    int toMatch = 1;
+                    while (!isAtEnd()) {
+                        if (peek() == '*' && peekNext() == '/')
+                            toMatch--;
+                        if (peek() == '/' && peekNext() == '*')
+                            toMatch++;
+                        if (peek() == '\n')
+                            line++;
+                        if (toMatch == 0)
+                            break;
+                        advance();
+                    }
+                    if (peek() == '*' && peekNext() == '/') {
+                        advance();
+                        advance();
+                    } else {
+                        Zealot.error(line, "No closing of block comment.");
+                    }
                 } else {
                     addToken(SLASH);
                 }
@@ -148,10 +170,10 @@ class Scanner {
 
             // it handles the identifiers like or
             // case 'o':
-            //     if (match('r')) {
-            //         addToken(OR);
-            //     }
-            //     break;
+            // if (match('r')) {
+            // addToken(OR);
+            // }
+            // break;
 
             // for handling the lexemes that are not available on the language like @ ^ #
             default:
@@ -175,14 +197,16 @@ class Scanner {
         while (isAlphaNumeric(peek()))
             advance();
         String text = source.substring(start, current);
-        
+
         // Extracts the token type of the character
         TokenType type = keywords.get(text);
         if (type == null) {
             type = IDENTIFIER;
         }
 
-        // addToken(IDENTIFIER); //Got my mind fucked fixing this small bug. It too literally took 2 days to fix. 
+        // addToken(IDENTIFIER); //Got my mind fucked fixing this small bug. It too
+        
+        // literally took 2 days to fix.
         addToken(type);
     }
 
