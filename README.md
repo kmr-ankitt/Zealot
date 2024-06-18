@@ -91,14 +91,19 @@ Zealot has following operators:
 
 
 ### Comments
-Zealot has only one type of comment, single line comments, which can be defined using `//` at the beginning of a line.
+Zealot support both single line and multi line comment.
 
+- Single line comment
 ```c
 // This is a comment.
-// The Lexer completely ignores any line starting with //
+// The Lexer completely ignores any line starting with 
 // The Whole line is ignored.
 ```
 
+- Multiline comment
+```c
+/*This is a mulit line comment similar to C syntax.*/
+```
 
 ### Variables
 ```javascript
