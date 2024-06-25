@@ -255,4 +255,4 @@ make clean
 Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -Force
 ```
 These commands will remove all compiled `.class` files, ensuring a clean environment 
-afsdfdasf
+fadsf`afsdfdasf
