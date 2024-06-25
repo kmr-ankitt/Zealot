@@ -1,4 +1,4 @@
-# Zealot
+#Zealot
 
 Zealot is a Tree-Walking Interpreter designed for simplicity, efficiency, and ease of use which I developed while learning. It aims to provide a clean and concise syntax while offering powerful features for developing a wide range of applications.
 
@@ -255,4 +255,4 @@ make clean
 Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -Force
 ```
 These commands will remove all compiled `.class` files, ensuring a clean environment 
-fdasf
+afsdfdasf
