@@ -1,4 +1,4 @@
-#Zealot
+# Zealot
 
 Zealot is a Tree-Walking Interpreter designed for simplicity, efficiency, and ease of use which I developed while learning. It aims to provide a clean and concise syntax while offering powerful features for developing a wide range of applications.
 
