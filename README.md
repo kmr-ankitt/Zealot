@@ -1,17 +1,59 @@
 # Zealot
 
-Zealot is a Tree-Walking Interpreter designed for simplicity, efficiency, and ease of use which I developed while learning. It aims to provide a clean and concise syntax while offering powerful features for developing a wide range of applications.
+Zealot is a Dynamically typed Tree-Walking Interpreter designed for simplicity, efficiency, and ease of use.
+
+## Why
+
+Zealot is designed to provide a clean and concise syntax while being powerful and easy to learn.
 
 ## Prerequisites
 
-Before running Zealot, ensure that you have the following installed on your system:
+- [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/javase-jdk16-downloads.html)
+- Make (Optional)
 
-- **Java Development Kit (JDK):** You can download and install JDK from the [official Oracle website](https://www.oracle.com/java/technologies/javase-jdk16-downloads.html).
+## Installation
+
+1. Clone `Zealot` official repository:
+
+```bash
+git clone https://github.com/kmr-ankitt/Zealot.git
+cd Zealot
+```
+
+2. Install Zealot:
+
+```bash
+source .bashrc  # For Linux/macOS
+```
+
+3. Run `Zealot` REPL:
+
+```bash
+zealot
+```
+You can also run Zealot using Makefile:
+
+```bash
+make compile
+make repl
+```
+
+4. Run `.zlt` file:
+
+```bash
+zealot FILE_DIRECTORY/FILE_NAME.zlt
+```
+Or using Makefile:
+
+```bash
+make run INPUT="FILE_DIRECTORY/FILE_NAME.zlt"
+```
 
 ## Zealot Documentation
 
-### File Extension
-Zealot supports text files with `zlt` file extension.
+### File extension
+
+Zealot supports only `.zlt` file extension.
 example: `main.zlt`
 
 ### Hello, world!
@@ -19,35 +61,35 @@ A simple hello world program in Zealot:
 ```python
 print "Hello, World!";
 ```
-Semi-colons at the end of every line is mandatory in Zealot.
+**Semi-colons at the end of every line are mandatory in Zealot.**
 
 ### Datatypes
-Zealot has following datatypes
+Zealot has the following datatypes:
 
 #### Numbers
-These can number literals which can be both integers and floating point numbers.
+Number literals can be both integers and floating-point numbers.
 
 examples: `1`, `2.5`, `9`
 
 #### Strings
-These are string literals defined inside `"`
+String literals are defined inside `"`.
 
 examples: `"Zealot"`, `"Strings are easy"`
 
 ### Booleans
-These are boolean literals which can be either `true` or `false`.
+Boolean literals can be either `true` or `false`.
 
 examples: `true`, `false`
 
-### Null
-Zealot has nulls, the trillion dollar mistale. It can be defined using the `nill` keyword. All uninitialized variables are given the value of `nill`.
+### Null Type
+Zealot has a null datatype. It can be defined using the `nill` keyword. All uninitialized variables are given the value of `nill`.
 
 examples: `nill`
 
+### Operators
 
+Zealot has the following operators:
 
-### Operators.
-Zealot has following operators:
 #### Assignment
 `=` - equals
 
@@ -61,57 +103,51 @@ Zealot has following operators:
 
 `!`   - logical NOT
 
-
 #### Arithmetic operators
 `+` - sum
 
 `-` - difference
 
-`*` - product 
+`*` - product
 
-`/` - division 
+`/` - division
 
 `%` - mod
-
 
 #### Comparison operators
 `==` - is equals
 
 `!=` - is not equals
 
-`>`  - is less than
+`<`  - is less than
 
-`>=` - is less than or equals
+`<=` - is less than or equals
 
 `>`  - is greater than
 
 `>=` - is greater than or equals
 
-
-
-
 ### Comments
-Zealot support both single line and multi line comment.
+Zealot supports both single-line and multi-line comments.
 
-- Single line comment
+- Single-line comment
 ```c
-// This is a comment.
-// The Lexer completely ignores any line starting with 
-// The Whole line is ignored.
+// This is a single-line comment.
 ```
 
-- Multiline comment
+- Multi-line comment
 ```c
-/*This is a mulit line comment similar to C syntax.*/
+/*This is a multi-line comment in Zealot.*/
 ```
 
 ### Variables
+
 ```javascript
-var x = 15; // number
-var name = "your name"; // string
-var yes = true; // booleans
-var no = false; // booleans
-var nullable = nil;
+var num = 15; // number
+var name = "radiohead"; // string
+var truth = true; // boolean
+var lie = false; // boolean
+var nullable = nill; // null type
 ```
 
 ### Logical operators
@@ -125,45 +161,46 @@ true or false;  // true.
 ```
 
 ### Control flow
-```python
-var x = 15;
-if(x > 0){
-    print "x > 0";
+```javascript
+var num = 15;
+
+if(num > 0){
+    print "num is positive";
 }else {
-    print "x <= 0";    
+    print "num is negative";
 }
 ```
 
 ### Loops
 ```javascript
-var i = 0;
-while(i < 10){
+for(var i = 0; i < 10; i = i + 1){
     print i;
-    i = i + 1;
 }
 
-for(var j=0; j<5; j = j + 1){
-    print j;
+var num = 1;
+while(num > 0){
+    print num;
+    num = num - 1;
 }
 ```
 
 ### Functions
 ```javascript
-fun greetings(name){
-    print "hello " + name;
+fun add(a, b){
+    return a + b;
 }
 
-greetings("piscan");
+print add(5, 10);
 ```
 
 ### Closures
 ```javascript
 fun addPair(a, b) {
-return a + b;
+    return a + b;
 }
 
 fun identity(a) {
-return a;
+    return a;
 }
 
 print identity(addPair)(1, 2); // Prints "3".
@@ -184,60 +221,32 @@ counter1(); // 1
 counter2(); // 1
 ```
 
-## Installing Zealot
+## Classes
+Zealot supports object-oriented programming with classes.
 
-To run Zealot, First clone Zealot Repository and navigate to the `Zealot` directory in your terminal and execute the following command:
+- Keywords: `class` for defining a class, `this` for the current context.
 
-```bash
-git clone https://github.com/kmr-ankitt/Zealot
-cd Zealot
+```javascript
+class Bacon {
+  fun eat() {
+    print "Crunch crunch crunch!";
+  }
+}
+
+Bacon().eat(); // Prints "Crunch crunch crunch!".
+
+class Thing {
+  fun getCallback() {
+    fun localFunction() {
+      print this;
+    }
+    return localFunction;
+  }
+}
+
+var callback = Thing().getCallback();
+callback();
 ```
-
-
-**For Linux and macOS:**
-
-```bash
-source .bashrc
-```
-
-- Repl Mode 
-```bash
-zealot 
-```
-
-- Zelaot file
-```bash
-zealot FILE_DIRECTORY
-```
-
-**For Windows:**
-
-- Repl Mode
-```powershell
-./zealot.bat
-```
-
-- Zealot File 
-```powershell
-./zealot.bat FILE_DIRECTORY
-```
-
-
-**Or Using Make**
-
-For Linux and MacOS :
-
-- Repl mode
-```bash
-make compile
-make repl 
-```
-
-- Zealot file
-```bash
-make run INPUT="FILE_DIRECTORY"
-```
-
 
 ## Cleaning Up Compiled Files
 
@@ -254,4 +263,7 @@ make clean
 ```powershell
 Get-ChildItem -Path .\com\piscan\zealot -Filter *.class -Recurse | Remove-Item -Force
 ```
-These commands will remove all compiled `.class` files, ensuring a clean environment 
+
+These commands will remove all compiled `.class` files, ensuring a clean environment.
+
+
