@@ -20,13 +20,7 @@ git clone https://github.com/kmr-ankitt/Zealot.git
 cd Zealot
 ```
 
-2. Install Zealot:
-
-```bash
-source .bashrc  # For Linux/macOS
-```
-
-3. Run `Zealot` REPL:
+2. Run `Zealot` REPL:
 
 ```bash
 zealot
